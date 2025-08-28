@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PollController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('/', PollController::class, ['as' => 'poll']);
