@@ -3,4 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PollController;
 
-Route::resource('/', PollController::class, ['as' => 'poll']);
+Route::get('/', [PollController::class, 'index'])->name('poll.index');
+
+Route::resource('poll', PollController::class);

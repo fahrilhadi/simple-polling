@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Poll;
+use App\Models\PollOption;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PollController extends Controller
 {
@@ -21,7 +23,7 @@ class PollController extends Controller
      */
     public function create()
     {
-        //
+        return view('poll.create');
     }
 
     /**
@@ -29,7 +31,35 @@ class PollController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'question' => 'required|string|max:255',
+            'options' => 'required|array|min:2',
+            'options.*' => 'required|string|max:100'
+        ],[
+            'question.required' => 'Question is required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // simpan poll
+        $poll = Poll::create([
+            'question' => $request->question,
+        ]);
+
+        // simpan opsi poll
+        foreach ($request->options as $optionText) {
+            PollOption::create([
+                'poll_id' => $poll->id,
+                'option_text' => $optionText,
+                'votes_count' => 0
+            ]);
+        }
+
+        return redirect()->route('poll.index')->with('success', 'Poll created successfully');
     }
 
     /**
