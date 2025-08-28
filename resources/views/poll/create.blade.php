@@ -14,7 +14,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-2">Question</label>
                     <input type="text" name="question" value="{{ old('question') }}" autocomplete="off"
-                        class="@error('question') is-invalid @enderror w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-black">
+                        class="@error('question') is-invalid @enderror text-sm w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-black">
                 </div>
                 {{-- Options --}}
                 <div class="mb-4">
@@ -48,6 +48,7 @@
             input.type = 'text';
             input.name = 'options[]';
             input.placeholder = `Option ${wrapper.children.length + 1}`;
+            input.autocomplete = "off";
             input.className = "w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-black mt-2";
             wrapper.appendChild(input);
         });

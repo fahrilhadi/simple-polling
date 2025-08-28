@@ -67,7 +67,8 @@ class PollController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $poll = Poll::with('options')->findOrFail($id);
+        return view('poll.show', compact('poll'));
     }
 
     /**
@@ -92,5 +93,29 @@ class PollController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function vote(Request $request, $id)
+    {
+        $request->validate([
+            'option_id' => 'required|exists:poll_options,id'
+        ]);
+
+        // Tambahkan vote
+        $option = PollOption::findOrFail($request->option_id);
+        $option->increment('votes_count');
+
+        // Ambil hasil terbaru untuk AJAX response
+        $poll = Poll::with('options')->findOrFail($id);
+        return response()->json([
+            'success' => true,
+            'results' => $poll->options->map(function ($opt) {
+                return [
+                    'id' => $opt->id,
+                    'text' => $opt->option_text,
+                    'votes' => $opt->votes_count
+                ];
+            })
+        ]);
     }
 }

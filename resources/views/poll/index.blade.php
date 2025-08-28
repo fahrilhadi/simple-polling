@@ -19,7 +19,7 @@
                             </p>
                         </div>
                         <div class="mt-2">
-                            <a href="" 
+                            <a href="{{ route('poll.show', $poll->id) }}" 
                                class="px-3 py-1 rounded-lg border border-gray-300 hover:border-black text-sm transition shadow">
                                 View & Vote
                             </a>
