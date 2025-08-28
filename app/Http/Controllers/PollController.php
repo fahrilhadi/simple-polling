@@ -92,7 +92,16 @@ class PollController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $poll = Poll::findOrFail($id);
+
+        $poll->delete();
+
+        return redirect()
+            ->route('poll.index')
+            ->with([
+                'success' => 'Poll deleted successfully',
+                'icon' => 'check',
+        ]);
     }
 
     public function vote(Request $request, $id)
